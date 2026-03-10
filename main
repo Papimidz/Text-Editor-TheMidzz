@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include "editor.h"
+
+int main() {
+    Editor editor;
+    initEditor(&editor);
+
+    int choice;
+    char line[256];
+    char filename[100];
+
+    while (1) {
+        printf("\n===== CLI TEXT EDITOR =====\n");
+        printf("1. Tampilkan teks\n");
+        printf("2. Tambah baris\n");
+        printf("3. Hapus baris\n");
+        printf("4. Simpan file\n");
+        printf("5. Buka file\n");
+        printf("0. Keluar\n");
+        printf("Pilih: ");
+        scanf("%d", &choice);
+        getchar();
+
+        switch(choice) {
+
+        case 1:
+            display(&editor);
+            break;
+
+        case 2:
+            printf("Masukkan teks: ");
+            fgets(line, sizeof(line), stdin);
+            insertLine(&editor, line);
+            break;
+
+        case 3:
+            int n;
+            printf("Hapus baris ke: ");
+            scanf("%d",&n);
+            deleteLine(&editor,n-1);
+            break;
+
+        case 4:
+            printf("Nama file: ");
+            scanf("%s",filename);
+            saveFile(&editor,filename);
+            break;
+
+        case 5:
+            printf("Nama file: ");
+            scanf("%s",filename);
+            openFile(&editor,filename);
+            break;
+
+        case 0:
+            return 0;
+        }
+    }
+}
