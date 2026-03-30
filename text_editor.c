@@ -15,5 +15,5 @@ void pasteText(char *buffer, char *clipboard) {
 void cutText(char *buffer, char *clipboard) {
     strcpy(clipboard, buffer);
     buffer[0] = '\0';
-    printf("[TEXT EDITOR] Cut berhasil\n");
+    printf("[TEXT EDITOR] Cut berhasil min\n");
 }
