@@ -2,84 +2,46 @@
 #include <string.h>
 #include "file_manager.h"
 #include "text_editor.h"
-#include "text_tools.h"
 
-#define MAX 1000
+#define MAX_LINES 100
+#define MAX_COL 100
 
 int main() {
-    char buffer[MAX] = "";
-    char clipboard[MAX] = "";
-    char filename[100];
+    char buffer[MAX_LINES][MAX_COL];
+    int lineCount = 0;
+    char filename[100] = "";
     int choice;
 
     do {
-        printf("\nTEKS EDITOR THEMIDZZ\n");
-        printf("ISI SEKARANG:\n%s\n", buffer);
-
-        printf("\nMenu:\n");
+        printf("\n=== TEXT EDITOR THEMIDZZ ===\n");
         printf("1. New File\n");
         printf("2. Open File\n");
-        printf("3. Save File\n");
-        printf("4. Delete File\n");
-        printf("5. Tambah Teks\n");
-        printf("6. Copy\n");
-        printf("7. Paste\n");
-        printf("8. Cut\n");
-        printf("9. Find & Replace\n");
-        printf("10. Close Tab\n");
+        printf("3. Delete File\n");
         printf("0. Exit\n");
-        printf("Pilihan: ");
+        printf("Pilih: ");
         scanf("%d", &choice);
         getchar();
 
         switch (choice) {
             case 1:
-                newFile(buffer);
+                lineCount = 0;
+                filename[0] = '\0';
+                editor(buffer, &lineCount, filename);
                 break;
 
             case 2:
                 printf("Nama file: ");
                 scanf("%s", filename);
                 getchar();
-                openFile(filename, buffer);
+                openFile(filename, buffer, &lineCount);
+                editor(buffer, &lineCount, filename);
                 break;
-
+                
             case 3:
                 printf("Nama file: ");
                 scanf("%s", filename);
                 getchar();
-                saveFile(filename, buffer);
-                break;
-
-            case 4:
-                printf("Nama file: ");
-                scanf("%s", filename);
-                getchar();
                 deleteFile(filename);
-                break;
-
-            case 5:
-                appendText(buffer);
-                break;
-
-            case 6:
-                copyText(buffer, clipboard);
-                break;
-
-            case 7:
-                pasteText(buffer, clipboard);
-                break;
-
-            case 8:
-                cutText(buffer, clipboard);
-                break;
-
-            case 9:
-                findReplace(buffer);
-                break;
-
-            case 10:
-                closeTab();
                 break;
         }
 
