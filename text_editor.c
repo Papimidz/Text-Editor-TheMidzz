@@ -47,13 +47,6 @@ void editor(char buffer[][100], int *lineCount, char *filename) {
                 printf("Copy baris terakhir\n");
             }
 
-<<<<<<< HEAD
-void cutText(char *buffer, char *clipboard) {
-    strcpy(clipboard, buffer);
-    buffer[0] = '\0';
-    printf("[TEXT EDITOR] Cut berhasil.\n");
-}
-=======
             else if (strncmp(line, "/paste", 6) == 0) {
                 if (*lineCount < MAX_LINES) {
                     strcpy(buffer[*lineCount], clipboard);
@@ -114,4 +107,3 @@ void cutText(char *buffer, char *clipboard) {
         }
     }
 }
->>>>>>> feature/text-editing
