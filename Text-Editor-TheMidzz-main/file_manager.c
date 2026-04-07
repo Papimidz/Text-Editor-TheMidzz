@@ -18,18 +18,19 @@ void saveFile(const char *filename, char *buffer) {
 
 void openFile(const char *filename, char *buffer) {
     FILE *fp = fopen(filename, "r");
-    char ch;
+    int ch; // harus int!
 
     if (fp == NULL) {
         printf("[FILE] File tidak ditemukan\n");
         return;
     }
 
-    buffer[0] = '\0';
-
-    while ((ch = fgetc(fp)) != EOF) {
-        strncat(buffer, &ch, 1);
+    int i = 0;
+    while ((ch = fgetc(fp)) != EOF && i < 999) {
+        buffer[i++] = (char)ch;
     }
+
+    buffer[i] = '\0'; // tutup string
 
     fclose(fp);
 
