@@ -20,22 +20,10 @@ void findReplace(char *buffer) {
     int i = 0;
 
     printf("Find: ");
-HEAD
-    fgets(find, sizeof(find),stdin);
-
+    scanf("%s", find);
     printf("Replace: ");
-    fgets(replace, sizeof(replace), stdin);
-    
-    find[strcspn(find, "\n")] = '\0';
-    replace[strcspn(replace, "\n")] = '\0'; 
-
-    fgets(find, sizeof(find), stdin);
-    find[strcspn(find, "\n")] = '\0'; 
-
-    printf("Replace: ");
-    fgets(replace, sizeof(replace), stdin);
-    replace[strcspn(replace, "\n")] = '\0';
-feature/text-tools
+    scanf("%s", replace);
+    getchar();
 
     temp[0] = '\0';
 
