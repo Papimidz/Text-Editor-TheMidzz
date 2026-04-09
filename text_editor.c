@@ -12,7 +12,7 @@ void editor(char buffer[][100], int *lineCount, char *filename) {
     char clipboard[100];
 
     while (1) {
-        printf("\n=== EDITOR (%s) ===\n", strlen(filename) ? filename : "Untitled");
+        printf("\n=== EDITOR THE MIDZZ (%s) ===\n", strlen(filename) ? filename : "Untitled");
         #ifdef _WIN32
             system("cls");
         #else
