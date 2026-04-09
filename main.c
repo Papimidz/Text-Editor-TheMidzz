@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "file_manager.c"
-#include "text_editor.c"
-#include "text_tools.c"
+#include "file_manager.h"
+#include "text_editor.h"
 
 #define MAX_LINES 100
 #define MAX_COL 100
