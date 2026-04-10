@@ -1,12 +1,9 @@
 #ifndef FILE_MANAGER_H
 #define FILE_MANAGER_H
+#include "text_editor.h"
 
-
-void saveFile(const char *filename, char buffer[][100], int lineCount);
-void openFile(const char *filename, char buffer[][100], int *lineCount);
-
-void saveFile(const char *filename, char *buffer);
-void openFile(const char *filename, char *buffer);
+void saveFile(EditorState *state);
+void openFile(char *inputFilename, EditorState *state);
 void deleteFile(const char *filename);
 
 #endif

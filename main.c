@@ -13,7 +13,7 @@ int main() {
     int choice;
 
     do {
-        printf("\n=== TEXT EDITOR THEMIDZZ ===\n");
+        printf("\n/=== TEXT EDITOR THEMIDZZ ===/\n");
         printf("1. New File\n");
         printf("2. Open File\n");
         printf("3. Delete File\n");
