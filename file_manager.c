@@ -1,66 +1,36 @@
 #include <stdio.h>
 #include <string.h>
 #include "file_manager.h"
+#include "text_editor.h"
 
-
-void saveFile(const char *filename, char buffer[][100], int lineCount) {
-    FILE *fp = fopen(filename, "w");
+void saveFile(EditorState *state) {
+    FILE *fp = fopen(state->filename, "w");
     if (!fp) {
         printf("Gagal save file\n");
         return;
     }
 
-    for (int i = 0; i < lineCount; i++) {
-        fprintf(fp, "%s\n", buffer[i]);
+    for (int i = 0; i < state->lineCount; i++) {
+        fprintf(fp, "%s\n", state->buffer[i]);
     }
 
     fclose(fp);
     printf("File disimpan\n");
 }
 
-void openFile(const char *filename, char buffer[][100], int *lineCount) {
-    FILE *fp = fopen(filename, "r");
+void openFile(char *inputFilename, EditorState *state) {
+    FILE *fp = fopen(inputFilename, "r");
     if (!fp) {
         printf("File tidak ditemukan\n");
         return;
     }
 
-    *lineCount = 0;
+    state->lineCount = 0;
+    strcpy(state->filename, inputFilename);
 
-    while (fgets(buffer[*lineCount], 100, fp)) {
-        buffer[*lineCount][strcspn(buffer[*lineCount], "\n")] = 0;
-        (*lineCount)++;
-    }
-
-    fclose(fp);
-    printf("File dibuka\n");
-void saveFile(const char *filename, char *buffer) {
-    FILE *fp = fopen(filename, "w");
-    if (!fp) {
-        printf("Gagal save file\n");
-        return;
-    }
-
-    for (int i = 0; i < lineCount; i++) {
-        fprintf(fp, "%s\n", buffer[i]);
-    }
-
-    fclose(fp);
-    printf("File disimpan\n");
-}
-
-void openFile(const char *filename, char buffer[][100], int *lineCount) {
-    FILE *fp = fopen(filename, "r");
-    if (!fp) {
-        printf("File tidak ditemukan\n");
-        return;
-    }
-
-    *lineCount = 0;
-
-    while (fgets(buffer[*lineCount], 100, fp)) {
-        buffer[*lineCount][strcspn(buffer[*lineCount], "\n")] = 0;
-        (*lineCount)++;
+    while (fgets(state->buffer[state->lineCount], MAX_COL, fp)) {
+        state->buffer[state->lineCount][strcspn(state->buffer[state->lineCount], "\n")] = 0;
+        (state->lineCount)++;
     }
 
     fclose(fp);
