@@ -4,25 +4,22 @@
 #include "text_editor.h"
 #include "file_manager.h"
 
-#define MAX_LINES 100
-#define MAX_COL 100
-
-void editor(char buffer[][100], int *lineCount, char *filename) {
+void editor(EditorState *state) {
     char line[100];
     char clipboard[100];
 
     while (1) {
-        printf("\n=== EDITOR THE MIDZZ (%s) ===\n", strlen(filename) ? filename : "Untitled");
+        printf("\n=== EDITOR THE MIDZZ (%s) ===\n", strlen(state->filename) ? state->filename : "Untitled");
         #ifdef _WIN32
             system("cls");
         #else
             system("clear");
         #endif
 
-	int i; 
-	for (i = 0; i < *lineCount; i++) {
-    printf("%s\n", buffer[i]);
-	}
+        int i; 
+        for (i = 0; i < state->lineCount; i++) {
+            printf("%s\n", state->buffer[i]);
+        }
         
         printf("\nKetik teks atau command:\n");
         printf("/save /copy /paste /cut /find /replace /close\n>> ");
@@ -33,31 +30,34 @@ void editor(char buffer[][100], int *lineCount, char *filename) {
         if (line[0] == '/') {
 
             if (strncmp(line, "/save", 5) == 0) {
-    			if (strlen(filename) == 0) {
-        		printf("Nama file: ");
-        		scanf("%s", filename);
-        		getchar();
-    }
-    saveFile(filename, buffer, *lineCount);
-}
+                if (strlen(state->filename) == 0) {
+                    printf("Nama file: ");
+                    scanf("%s", state->filename);
+                    getchar();
+                }
+                saveFile(state);
+                
+                printf("Tekan Enter untuk lanjut...");
+                getchar();
+            }
 
             else if (strncmp(line, "/copy", 5) == 0) {
-                if (*lineCount > 0)
-                    strcpy(clipboard, buffer[*lineCount - 1]);
+                if (state->lineCount > 0)
+                    strcpy(clipboard, state->buffer[state->lineCount - 1]);
                 printf("Copy baris terakhir\n");
             }
 
             else if (strncmp(line, "/paste", 6) == 0) {
-                if (*lineCount < MAX_LINES) {
-                    strcpy(buffer[*lineCount], clipboard);
-                    (*lineCount)++;
+                if (state->lineCount < MAX_LINES) {
+                    strcpy(state->buffer[state->lineCount], clipboard);
+                    (state->lineCount)++;
                 }
             }
 
             else if (strncmp(line, "/cut", 4) == 0) {
-                if (*lineCount > 0) {
-                    strcpy(clipboard, buffer[*lineCount - 1]);
-                    (*lineCount)--;
+                if (state->lineCount > 0) {
+                    strcpy(clipboard, state->buffer[state->lineCount - 1]);
+                    (state->lineCount)--;
                     printf("Cut baris terakhir\n");
                 }
             }
@@ -68,11 +68,17 @@ void editor(char buffer[][100], int *lineCount, char *filename) {
                 scanf("%s", word);
                 getchar();
 
-                for (int i = 0; i < *lineCount; i++) {
-                    if (strstr(buffer[i], word)) {
+                int found = 0;
+                for (int i = 0; i < state->lineCount; i++) {
+                    if (strstr(state->buffer[i], word)) {
                         printf("Ditemukan di baris %d\n", i + 1);
+                        found = 1;
                     }
                 }
+                if (!found) printf("Kata tidak ditemukan.\n");
+       
+                printf("Tekan Enter untuk lanjut...");
+                getchar();
             }
 
             else if (strncmp(line, "/replace", 8) == 0) {
@@ -83,9 +89,9 @@ void editor(char buffer[][100], int *lineCount, char *filename) {
                 scanf("%s", replace);
                 getchar();
 
-                for (int i = 0; i < *lineCount; i++) {
-                    if (strcmp(buffer[i], find) == 0) {
-                        strcpy(buffer[i], replace);
+                for (int i = 0; i < state->lineCount; i++) {
+                    if (strcmp(state->buffer[i], find) == 0) {
+                        strcpy(state->buffer[i], replace);
                     }
                 }
             }
@@ -96,13 +102,15 @@ void editor(char buffer[][100], int *lineCount, char *filename) {
 
             else {
                 printf("Command tidak dikenal\n");
+                printf("Tekan Enter untuk lanjut...");
+                getchar();
             }
         }
 
         else {
-            if (*lineCount < MAX_LINES) {
-                strcpy(buffer[*lineCount], line);
-                (*lineCount)++;
+            if (state->lineCount < MAX_LINES) {
+                strcpy(state->buffer[state->lineCount], line);
+                (state->lineCount)++;
             }
         }
     }
