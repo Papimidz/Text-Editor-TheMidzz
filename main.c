@@ -3,17 +3,13 @@
 #include "file_manager.h"
 #include "text_editor.h"
 
-#define MAX_LINES 100
-#define MAX_COL 100
-
 int main() {
-    char buffer[MAX_LINES][MAX_COL];
-    int lineCount = 0;
-    char filename[100] = "";
+    EditorState state;
     int choice;
+    char tempFilename[100];
 
     do {
-        printf("\n/=== TEXT EDITOR THEMIDZZ ===/\n");
+        printf("\n===== TEXT EDITOR THEMIDZZ =====\n");
         printf("1. New File\n");
         printf("2. Open File\n");
         printf("3. Delete File\n");
@@ -24,24 +20,26 @@ int main() {
 
         switch (choice) {
             case 1:
-                lineCount = 0;
-                filename[0] = '\0';
-                editor(buffer, &lineCount, filename);
+                state.lineCount = 0;
+                state.filename[0] = '\0';
+                editor(&state);
                 break;
 
             case 2:
                 printf("Nama file: ");
-                scanf("%s", filename);
+                scanf("%s", tempFilename);
                 getchar();
-                openFile(filename, buffer, &lineCount);
-                editor(buffer, &lineCount, filename);
+                openFile(tempFilename, &state);
+                if (strlen(state.filename) > 0) {
+                    editor(&state);
+                }
                 break;
                 
             case 3:
                 printf("Nama file: ");
-                scanf("%s", filename);
+                scanf("%s", tempFilename);
                 getchar();
-                deleteFile(filename);
+                deleteFile(tempFilename);
                 break;
         }
 
