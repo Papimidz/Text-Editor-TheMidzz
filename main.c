@@ -8,11 +8,8 @@ int main() {
     int choice;
     char tempFilename[100];
 
-<<<<<<< HEAD
-=======
     CreateEmpty(&state);
 
->>>>>>> cc6f08eb492a966358f80bd0adeb2bbab670f148
     do {
         printf("\n===== TEXT EDITOR THEMIDZZ =====\n");
         printf("1. New File\n");
