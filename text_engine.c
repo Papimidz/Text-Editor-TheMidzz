@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "text.h"
+#include "text_editor.h"
 #include "text_engine.h"
 
 void initText(Text* t) {
     t->head = NULL;
     t->tail = NULL;
-    t->filename[0] = '\0';
 }
 
 void insertChar(Text* t, char c) {
@@ -57,7 +58,6 @@ void clearText(Text* t) {
 
     t->head = NULL;
     t->tail = NULL;
-    t->filename[0] = '\0';
 }
 
 int getLength(Text* t) {
