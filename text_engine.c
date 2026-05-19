@@ -45,33 +45,3 @@ void displayText(Text* t) {
 
     printf("\n");
 }
-
-
-void clearText(Text* t) {
-    Node* curr = t->head;
-
-    while (curr != NULL) {
-        Node* temp = curr;     
-        curr = curr->next;     
-        free(temp);            
-    }
-
-    t->head = NULL;
-    t->tail = NULL;
-}
-
-int getLength(Text* t) {
-    int count = 0;
-    Node* curr = t->head;
-
-    while (curr != NULL) {
-        count++;
-        curr = curr->next;
-    }
-
-    return count;
-}
-
-int isEmpty(Text* t) {
-    return (t->head == NULL);
-}
