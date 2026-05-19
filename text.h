@@ -12,17 +12,4 @@ typedef struct {
     Node* tail;
 } Text;
 
-typedef struct LineNode {
-    Text lineContent;
-    struct LineNode *prev;
-    struct LineNode *next;
-} LineNode;
-
-typedef struct {
-    LineNode *head;
-    LineNode *tail;
-    int lineCount;
-    char filename[100];
-} EditorState;
-
 #endif

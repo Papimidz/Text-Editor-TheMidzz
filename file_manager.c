@@ -10,6 +10,10 @@ void CreateEmpty(EditorState *state){
     initEditor(state); 
 }
 
+void NewFile(List *L){
+    address P, delete;
+
+    P = L->Head;
 void NewFile(EditorState *state){
     LineNode *P = state->head;
     LineNode *hapus;
@@ -17,6 +21,7 @@ void NewFile(EditorState *state){
     while (P != NULL){
         hapus = P;
         P = P->next;
+        free(delete);
         clearText(&(hapus->lineContent));
         free(hapus);
     }
