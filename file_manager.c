@@ -10,15 +10,26 @@ void CreateEmpty(EditorState *state){
     initEditor(state); 
 }
 
+<<<<<<< HEAD
 void NewFile(EditorState *state){
     LineNode *P = state->head;
     LineNode *hapus;
+=======
+void NewFile(List *L){
+    address P, delete;
+
+    P = L->Head;
+>>>>>>> eda6f48d513eb07e8dacb8fa6476dc7dc710c58e
 
     while (P != NULL){
         hapus = P;
         P = P->next;
+<<<<<<< HEAD
         clearText(&(hapus->lineContent));
         free(hapus);
+=======
+        free(delete);
+>>>>>>> eda6f48d513eb07e8dacb8fa6476dc7dc710c58e
     }
 
     CreateEmpty(state);

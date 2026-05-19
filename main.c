@@ -17,7 +17,8 @@ int main() {
         printf("\n===== TEXT EDITOR THEMIDZZ =====\n");
         printf("1. New File\n");
         printf("2. Open File\n");
-        printf("3. Delete File\n");
+        printf("3. Save File\n");
+        printf("4. Delete File\n");
         printf("0. Exit\n");
         printf("Pilih: ");
         scanf("%d", &choice);
