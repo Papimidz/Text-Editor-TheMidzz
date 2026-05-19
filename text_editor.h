@@ -3,8 +3,4 @@
 
 #include "text.h"
 
-void initEditor(EditorState *state);
-void addLine(EditorState *state, char *inputText);
-void editor(EditorState *state);
-
 #endif

@@ -7,7 +7,6 @@
 #include "text_engine.h"
 
 int main() {
-    EditorState state;
     int choice;
     char tempFilename[100];
 
