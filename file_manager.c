@@ -8,14 +8,14 @@ void CreateEmpty(List *L){
 }
 
 void NewFile(List *L){
-    address P, hapus;
+    address P, delete;
 
     P = L->Head;
 
     while (P != NULL){
         hapus = P;
         P = P->next;
-        free(hapus);
+        free(delete);
     }
 
     CreateEmpty(L);

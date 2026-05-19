@@ -5,7 +5,7 @@
 typedef struct tNode *address;
 
 typedef struct tNode {
-    char info[256]
+    char info[256];
     address next;
 } Node;
 
