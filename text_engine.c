@@ -9,7 +9,6 @@ void initText(Text* t) {
     t->head = NULL;
     t->tail = NULL;
 }
-
 void insertChar(Text* t, char c) {
     Node* newNode = (Node*) malloc(sizeof(Node));
 
@@ -34,7 +33,6 @@ void insertChar(Text* t, char c) {
         t->tail = newNode;       
     }
 }
-
 void displayText(Text* t) {
     Node* curr = t->head;
 
@@ -44,4 +42,30 @@ void displayText(Text* t) {
     }
 
     printf("\n");
+}
+void clearText(Text* t) {
+    Node* curr = t->head;
+
+    while (curr != NULL) {
+        Node* temp = curr;    
+        curr = curr->next;     
+        free(temp);            
+    }
+    t->head = NULL;
+    t->tail = NULL;
+    t->filename[0] = '\0';
+}
+int getLength(Text* t) {
+    int count = 0;
+    Node* curr = t->head;
+
+    while (curr != NULL) {
+        count++;
+        curr = curr->next;
+    }
+
+    return count;
+}
+int isEmpty(Text* t) {
+    return (t->head == NULL);
 }

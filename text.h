@@ -10,6 +10,8 @@ typedef struct Node {
 typedef struct {
     Node* head;
     Node* tail;
+
+    char filename[256];
 } Text;
 
 #endif
