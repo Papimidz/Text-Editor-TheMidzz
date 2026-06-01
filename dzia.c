@@ -69,3 +69,18 @@ int getLength(Text* t) {
 int isEmpty(Text* t) {
     return (t->head == NULL);
 }
+
+Node* getNodeAt(Text* t, int index) {
+    int count = 0;
+    Node* curr = t->head;
+
+    while (curr != NULL) {
+        if (count == index) {
+            return curr;
+        }
+        count++;
+        curr = curr->next;
+    }
+
+    return NULL; 
+}
