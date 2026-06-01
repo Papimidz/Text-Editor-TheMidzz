@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "text.h"
-#include "text_editor.h"
-#include "text_engine.h"
+#include "hasbi.h"
+#include "dzia.h"
 
 void initText(Text* t) {
     t->head = NULL;
@@ -68,4 +68,19 @@ int getLength(Text* t) {
 }
 int isEmpty(Text* t) {
     return (t->head == NULL);
+}
+
+Node* getNodeAt(Text* t, int index) {
+    int count = 0;
+    Node* curr = t->head;
+
+    while (curr != NULL) {
+        if (count == index) {
+            return curr;
+        }
+        count++;
+        curr = curr->next;
+    }
+
+    return NULL; 
 }
