@@ -3,7 +3,7 @@
 #include <string.h>
 #include "text.h"
 #include "text_editor.h"
-#include "file_manager.h"
+#include "chyntia.h"
 #include "text_engine.h"
 
 void CreateEmpty(EditorState *state){
@@ -49,7 +49,7 @@ void saveFile(EditorState *state) {
     }
 
     fclose(file);
-    printf("\n>> File \ "%s\" berhasil disimpan.\n", state->filename);
+    printf("\n>> File \"%s\" berhasil disimpan.\n", state->filename);
 }
 
 
