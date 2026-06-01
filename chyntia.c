@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "text.h"
-#include "text_editor.h"
+#include "hasbi.h"
 #include "chyntia.h"
-#include "text_engine.h"
+#include "dzia.h"
 
 void CreateEmpty(EditorState *state){
     initEditor(state); 
@@ -66,7 +66,6 @@ void openFile(char *filename, EditorState *state) {
         return;
     }
 
-    // Bersihkan dulu memori editor dari teks lama sebelum membuka file baru
     LineNode *P = state->head;
     LineNode *hapus;
     while (P != NULL){
@@ -77,16 +76,12 @@ void openFile(char *filename, EditorState *state) {
     }
     CreateEmpty(state);
 
-    // Salin nama file ke state
     strcpy(state->filename, filename);
 
     char buffer[1024];
-    // Membaca file baris demi baris menggunakan fgets
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
-        // Hilangkan karakter newline '\n' di akhir string jika terbaca oleh fgets
         buffer[strcspn(buffer, "\n")] = 0;
         
-        // Masukkan string baris ini ke dalam linked list lewat fungsi milik Orang 1 & 2
         addLine(state, buffer);
     }
 
