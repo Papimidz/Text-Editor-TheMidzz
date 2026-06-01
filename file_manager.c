@@ -26,8 +26,33 @@ void NewFile(EditorState *state){
 }
 
 void saveFile(EditorState *state) {
-    printf("\nFitur Save Belum Selesai.\n");
+    FILE *file = fopen(state->filename, "w");
+    if (file == NULL){
+        printf("\nGagal menyimpan file %s!\n", state->filename);
+        return;
+    }
+    
+
+    LineNode *currLine - state->head;
+    while (currLine != NULL){
+
+        Node *currChar = currLine->lineContent.head;
+        while (currchar != NULL){
+            fputc(currChar->data, file);
+            currChar = currChar->next;
+        }
+
+        if(currLine->next != NULL){
+            fputc('\n', file;)
+        }
+        currLine = currLine->next;
+    }
+
+    fclose(file);
+    printf("\n>> File \ "%s\" berhasil disimpan.\n", state->filename);
 }
+
+
 
 void openFile(char *filename, EditorState *state) {
     printf("\nFitur Open sedang dalam pengembangan.\n");
