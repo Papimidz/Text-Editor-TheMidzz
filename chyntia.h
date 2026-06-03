@@ -1,6 +1,6 @@
-#ifndef FILE_MANAGER_H
-#define FILE_MANAGER_H
-#include "text_editor.h"
+#ifndef CHYNTIA_H
+#define CHYNTIA_H
+#include "hasbi.h"
 
 typedef struct tNode *address;
 
@@ -16,7 +16,7 @@ typedef struct tNode {
 } Node;
 
 typedef struct tNode {
-    char info[256]
+    char info[256];
     address next;
 } Node;
 
