@@ -6,7 +6,7 @@
 #include "dzia.h"
 
 char clipboard[1024] = "";
-// nambahin titik koma tadi error
+
 void getTextString(Text *t, char *buffer) {
     Node *curr = t->head;
     int i = 0;
