@@ -1,5 +1,5 @@
-#ifndef TEXT_EDITOR_H
-#define TEXT_EDITOR_H
+#ifndef HASBI_H
+#define HASBI_H
 
 #include "dzia.h"
 typedef struct LineNode {

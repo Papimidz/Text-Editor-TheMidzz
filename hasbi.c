@@ -5,74 +5,108 @@
 #include "chyntia.h"
 #include "dzia.h"
 
-char clipboard[1024] = "";
+char clipboard[1024] = ""
 
 void getTextString(Text *t, char *buffer) {
+    Node *curr = t->head;
     int i = 0;
-    for (Node *curr = t->head; curr != NULL; curr = curr->next) 
+    while (curr != NULL) {
         buffer[i++] = curr->data;
+        curr = curr->next;
+    }
     buffer[i] = '\0';
 }
 
 LineNode* getLine(EditorState *state, int targetRow) {
     LineNode *curr = state->head;
-    for (int count = 1; curr != NULL && count < targetRow; count++) 
+    int count = 1;
+    while (curr != NULL && count < targetRow) {
         curr = curr->next;
+        count++;
+    }
     return curr;
 }
 
-void processClipboard(EditorState *state, int row, int isCut) {
+void copyLine(EditorState *state, int row) {
+    LineNode *target = getLine(state, row); 
+    if (target != NULL) {
+        getTextString(&(target->lineContent), clipboard);
+        printf(">> Baris %d berhasil disalin!\n", row);
+    } else {
+        printf(">> Baris tidak ditemukan!\n");
+    }
+}
+
+void cutLine(EditorState *state, int row) {
     LineNode *target = getLine(state, row);
-    if (!target) return (void)printf(">> [Error] Baris %d tidak ditemukan!\n", row);
+    if (target != NULL) {
+        getTextString(&(target->lineContent), clipboard);
 
-    getTextString(&(target->lineContent), clipboard);
-    printf(">> Baris %d berhasil di-%s ke clipboard!\n", row, isCut ? "cut" : "copy");
+        if (target->prev != NULL) target->prev->next = target->next;
+        else state->head = target->next; 
 
-    if (isCut) {
-        if (target->prev) target->prev->next = target->next; else state->head = target->next;
-        if (target->next) target->next->prev = target->prev; else state->tail = target->prev;
+        if (target->next != NULL) target->next->prev = target->prev;
+        else state->tail = target->prev; 
+
         clearText(&(target->lineContent));
         free(target);
         state->lineCount--;
+        
+        printf(">> Baris %d berhasil dipotong!\n", row);
+    } else {
+        printf(">> Baris tidak ditemukan!\n");
     }
 }
 
 void findWord(EditorState *state, char *word) {
-    char buf[1024];
+    LineNode *curr = state->head;
+    char buffer[1024];
     int row = 1, found = 0;
-    
+
     printf("\n>> Hasil pencarian untuk '%s':\n", word);
-    for (LineNode *curr = state->head; curr != NULL; curr = curr->next, row++) {
-        getTextString(&(curr->lineContent), buf);
-        if (strstr(buf, word)) {
-            printf("   - Baris %d: %s\n", row, buf);
+    while (curr != NULL) {
+        getTextString(&(curr->lineContent), buffer);
+        if (strstr(buffer, word) != NULL) {
+            printf("   - Ada di baris %d: %s\n", row, buffer);
             found = 1;
         }
+        curr = curr->next;
+        row++;
     }
-    if (!found) printf("   (Tidak ada hasil yang cocok)\n");
+    if (found == 0) printf("   (Tidak ada hasil yang cocok)\n");
 }
 
-void replaceWord(EditorState *state, int targetRow, char *oldWord, char *newWord) {
-    LineNode *t = getLine(state, targetRow);
-    if (!t) return (void)printf(">> [Error] Baris %d tidak ditemukan!\n", targetRow);
+void replaceWord(EditorState *state, char *kataLama, char *kataBaru) {
+    LineNode *curr = state->head;
+    char buffer[1024], temp[1024];
+    int count = 0;
 
-    char buf[1024], temp[1024];
-    getTextString(&(t->lineContent), buf);
-    char *pos = strstr(buf, oldWord);
-    
-    if (pos) {
-        sprintf(temp, "%.*s%s%s", (int)(pos - buf), buf, newWord, pos + strlen(oldWord));
+    while (curr != NULL) {
+        getTextString(&(curr->lineContent), buffer);
+        char *pos = strstr(buffer, kataLama);
         
-        clearText(&(t->lineContent));
-        for(size_t i = 0; temp[i] != '\0'; i++) insertChar(&(t->lineContent), temp[i]);
-        printf(">> Selesai! Kata pada baris %d berhasil diperbarui.\n", targetRow);
-    } else {
-        printf(">> [Gagal] Kata '%s' tidak ditemukan di baris %d.\n", oldWord, targetRow);
+        if (pos != NULL) {
+            int index = pos - buffer;
+            
+            strncpy(temp, buffer, index);
+            temp[index] = '\0';
+            strcat(temp, kataBaru);
+            strcat(temp, pos + strlen(kataLama));
+            
+            clearText(&(curr->lineContent));
+            for(size_t i = 0; i < strlen(temp); i++) {
+                insertChar(&(curr->lineContent), temp[i]);
+            }
+            count++;
+        }
+        curr = curr->next;
     }
+    printf(">> Selesai! %d baris telah diperbarui.\n", count);
 }
 
 void initEditor(EditorState *state) {
-    state->head = state->tail = NULL;
+    state->head = NULL;
+    state->tail = NULL;
     state->lineCount = 0;
     state->filename[0] = '\0';
 }
@@ -81,13 +115,14 @@ void addLine(EditorState *state, char *inputText) {
     LineNode *newNode = (LineNode*) malloc(sizeof(LineNode)); 
     initText(&(newNode->lineContent)); 
     
-    for (size_t i = 0; inputText[i] != '\0'; i++) 
+    for (size_t i = 0; i < strlen(inputText); i++) {
         insertChar(&(newNode->lineContent), inputText[i]);
+    }
 
     newNode->next = NULL;
     newNode->prev = state->tail;
 
-    if (!state->head) state->head = newNode;
+    if (state->head == NULL) state->head = newNode;
     else state->tail->next = newNode;
     
     state->tail = newNode;
@@ -95,64 +130,80 @@ void addLine(EditorState *state, char *inputText) {
 }
 
 void editor(EditorState *state) {
-    char input[1024];
+    char input[256];
     
     while (1) {
-        #ifdef _WIN32
-            system("cls");
-        #else
-            system("clear");
+        #ifdef _WIN32 
+            system("cls"); 
+        #else 
+            system("clear"); 
         #endif
+
+        printf("\n=== EDITOR THE MIDZZ [%s] ===\n", strlen(state->filename) ? state->filename : "Untitled");
         
-        printf("\n=== EDITOR THE MIDZZ [%s] ===\n", state->filename[0] ? state->filename : "Untitled");
-        
+        LineNode *currLine = state->head;
         int row = 1;
-        for (LineNode *curr = state->head; curr != NULL; curr = curr->next) {
+        while (currLine != NULL) {
             printf("%d | ", row++);
-            displayText(&(curr->lineContent)); 
+            displayText(&(currLine->lineContent)); 
+            currLine = currLine->next;
         }
         
-        printf("\nMenu:\n[ Teks biasa -> Tambah baris ]\n[ Perintah -> /copy <baris>, /cut <baris>, /paste, /find <kata>, /replace, /save, /close ]\n>> ");
+        // Menu Antarmuka
+        printf("\nMenu: Teks Biasa (Tambah Baris) | /copy <baris> | /cut <baris> | /paste | /find <kata> | /replace <lama> <baru> | /save | /close\n>> ");
         
-        if (!fgets(input, sizeof(input), stdin)) break;
+        if (fgets(input, sizeof(input), stdin) == NULL) break;
         input[strcspn(input, "\n")] = 0;
-        if (strlen(input) == 0) continue;
 
-        if (input[0] == '/') {
-            int argVal = 0;
+        char cmd[50] = "", arg1[100] = "", arg2[100] = "";
+        sscanf(input, "%s %s %s", cmd, arg1, arg2);
 
-            if (strcmp(input, "/close") == 0) break;
-            
-            else if (strcmp(input, "/save") == 0) {
-                if (!state->filename[0]) {
-                    printf("Nama file baru: ");
-                    fgets(state->filename, sizeof(state->filename), stdin);
-                    state->filename[strcspn(state->filename, "\n")] = 0;
+        int angkaBaris = 0;
+
+        if (cmd[0] == '/') {
+            if (strcmp(cmd, "/save") == 0) {
+                if (strlen(state->filename) == 0) {
+                    printf("Masukkan nama file baru: ");
+                    scanf("%s", state->filename); getchar();
                 }
                 saveFile(state);
-            }
-            else if (sscanf(input, "/copy %d", &argVal) == 1) processClipboard(state, argVal, 0);
+                printf("... Tekan Enter"); getchar();
+            } 
+            else if (strcmp(cmd, "/close") == 0) break;
             
-            else if (sscanf(input, "/cut %d", &argVal) == 1) processClipboard(state, argVal, 1);
-            
-            else if (strcmp(input, "/paste") == 0) {
-                if (clipboard[0]) { addLine(state, clipboard); printf(">> Paste berhasil!\n"); } 
-                else printf(">> Clipboard kosong!\n");
+            else if (strcmp(cmd, "/copy") == 0) {
+                sscanf(arg1, "%d", &angkaBaris);
+                copyLine(state, angkaBaris); 
+                printf("... Tekan Enter"); getchar();
             }
-            else if (strncmp(input, "/find ", 6) == 0) findWord(state, input + 6);
-            
-            else if (strcmp(input, "/replace") == 0) {
-                char oldP[1024], newP[1024], buf[50];
-                printf("Baris yg diedit: "); argVal = atoi(fgets(buf, 50, stdin));
-                printf("Kata lama: "); fgets(oldP, 1024, stdin); oldP[strcspn(oldP, "\n")] = 0;
-                printf("Kata baru: "); fgets(newP, 1024, stdin); newP[strcspn(newP, "\n")] = 0;
-                replaceWord(state, argVal, oldP, newP);
+            else if (strcmp(cmd, "/cut") == 0) {
+                sscanf(arg1, "%d", &angkaBaris);
+                cutLine(state, angkaBaris);
+                printf("... Tekan Enter"); getchar();
             }
-            else printf(">> Perintah tidak dikenali!\n");
-
-            printf("... Tekan Enter"); getchar();
+            else if (strcmp(cmd, "/paste") == 0) {
+                if (strlen(clipboard) > 0) {
+                    addLine(state, clipboard);
+                    printf(">> Paste berhasil di akhir dokumen!\n");
+                } else {
+                    printf(">> Clipboard kosong!\n");
+                }
+                printf("... Tekan Enter"); getchar();
+            }
+            else if (strcmp(cmd, "/find") == 0) {
+                findWord(state, arg1);
+                printf("... Tekan Enter"); getchar();
+            }
+            else if (strcmp(cmd, "/replace") == 0) {
+                replaceWord(state, arg1, arg2);
+                printf("... Tekan Enter"); getchar();
+            }
+            else {
+                printf(">> Perintah tidak dikenali!\n");
+                printf("... Tekan Enter"); getchar();
+            }
         } 
-        else {
+        else if (strlen(input) > 0) {
             addLine(state, input);
         }
     }
