@@ -90,5 +90,9 @@ void openFile(char *filename, EditorState *state) {
 }
 
 void deleteFile(char *filename) {
-    printf("\nFitur Delete sedang dalam pengembangan.\n");
+    if (remove(filename) == 0) { 
+        printf("\n>> File \"%s\" berhasil dihapus dari sistem.\n", filename);
+    } else {
+        printf("\n>> Gagal menghapus file. Periksa kembali nama file Anda.\n");
+    }
 }
