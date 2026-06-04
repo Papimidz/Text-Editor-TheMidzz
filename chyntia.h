@@ -1,29 +1,11 @@
 #ifndef CHYNTIA_H
 #define CHYNTIA_H
-#include "hasbi.h"
-
-typedef struct tNode *address;
 
 void CreateEmpty(EditorState *L);
-void openFile(char *filename, EditorState *state);
-void deleteFile(char *filename);
 void NewFile(EditorState *L);
+void openFile(char *filename, EditorState *state);
 void saveFile(EditorState *state);
-
-typedef struct tNode {
-    char info[256];
-    address next;
-} Node;
-
-typedef struct tNode {
-    char info[256];
-    address next;
-} Node;
-
-typedef struct {
-    address Head;
-} List;
-
+void deleteFile(char *filename);
 void CreateEmpty(List *L);
 void NewFile(List *L);
 
