@@ -5,8 +5,8 @@
 #include "chyntia.h"
 #include "dzia.h"
 
-char clipboard[1024] = ""
-
+char clipboard[1024] = "";
+// nambahin titik koma tadi error
 void getTextString(Text *t, char *buffer) {
     Node *curr = t->head;
     int i = 0;
@@ -149,8 +149,7 @@ void editor(EditorState *state) {
             currLine = currLine->next;
         }
         
-        // Menu Antarmuka
-        printf("\nMenu: Teks Biasa (Tambah Baris) | /copy <baris> | /cut <baris> | /paste | /find <kata> | /replace <lama> <baru> | /save | /close\n>> ");
+        printf("\nMenu: | /copy <baris> | /cut <baris> | /paste | /find <kata> | /replace <lama> <baru> | /save | /close\n>> ");
         
         if (fgets(input, sizeof(input), stdin) == NULL) break;
         input[strcspn(input, "\n")] = 0;
