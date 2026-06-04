@@ -1,8 +1,18 @@
 #ifndef dzia_H
 #define dzia_H
-
-#include "text.h"
 #include "hasbi.h"
+
+typedef struct Node {
+    char data;
+    struct Node* prev;
+    struct Node* next;
+} Node;
+
+typedef struct {
+    Node* head;
+    Node* tail;
+    char filename[256];
+} Text;
 
 void initText(Text* t);
 void insertChar(Text* t, char c);

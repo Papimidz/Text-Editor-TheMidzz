@@ -1,19 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "text.h"
 #include "hasbi.h"
 #include "chyntia.h"
 #include "dzia.h"
 
 int main() {
+    EditorState state;
     int choice;
     char tempFilename[100];
 
     CreateEmpty(&state);
 
     do {
-        printf("\n===== TEXT EDITOR THEMIDZZ =====\n");
+        printf("\n|===== TEXT EDITOR THEMIDZZ =====|\n");
         printf("1. New File\n");
         printf("2. Open File\n");
         printf("3. Save File\n");
