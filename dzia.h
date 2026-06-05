@@ -14,7 +14,7 @@ typedef struct {
     char filename[256];
 } Text;
 
-typedef struct Editorstate;
+typedef struct EditorState EditorState;
 
 void initText(Text* t);
 void insertChar(Text* t, char c);
@@ -22,7 +22,5 @@ void displayText(Text* t);
 void clearText(Text* t);
 int isEmpty(Text* t);
 void findAndReplace(EditorState *state);
-
-
 
 #endif
