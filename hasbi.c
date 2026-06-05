@@ -58,52 +58,6 @@ void cutLine(EditorState *state, int row) {
     }
 }
 
-void findWord(EditorState *state, char *word) {
-    LineNode *curr = state->head;
-    char buffer[1024];
-    int row = 1, found = 0;
-
-    printf("\n>> Hasil pencarian untuk '%s':\n", word);
-    while (curr != NULL) {
-        getTextString(&(curr->lineContent), buffer);
-        if (strstr(buffer, word) != NULL) {
-            printf("   - Ada di baris %d: %s\n", row, buffer);
-            found = 1;
-        }
-        curr = curr->next;
-        row++;
-    }
-    if (found == 0) printf("   (Tidak ada hasil yang cocok)\n");
-}
-
-void replaceWord(EditorState *state, char *kataLama, char *kataBaru) {
-    LineNode *curr = state->head;
-    char buffer[1024], temp[1024];
-    int count = 0;
-
-    while (curr != NULL) {
-        getTextString(&(curr->lineContent), buffer);
-        char *pos = strstr(buffer, kataLama);
-        
-        if (pos != NULL) {
-            int index = pos - buffer;
-            
-            strncpy(temp, buffer, index);
-            temp[index] = '\0';
-            strcat(temp, kataBaru);
-            strcat(temp, pos + strlen(kataLama));
-            
-            clearText(&(curr->lineContent));
-            for(size_t i = 0; i < strlen(temp); i++) {
-                insertChar(&(curr->lineContent), temp[i]);
-            }
-            count++;
-        }
-        curr = curr->next;
-    }
-    printf(">> Selesai! %d baris telah diperbarui.\n", count);
-}
-
 void initEditor(EditorState *state) {
     state->head = NULL;
     state->tail = NULL;
