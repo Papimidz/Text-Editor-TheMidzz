@@ -15,6 +15,7 @@ typedef struct EditorState {
     char filename[256];        
 } EditorState;
 
+void getTextString(Text *t, char *buffer);
 void initEditor(EditorState *state);
 void addLine(EditorState *state, char *inputText);
 void editor(EditorState *state);
