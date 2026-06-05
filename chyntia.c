@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "text.h"
 #include "hasbi.h"
 #include "chyntia.h"
 #include "dzia.h"
