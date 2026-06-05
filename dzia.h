@@ -14,7 +14,7 @@ typedef struct {
     char filename[256];
 } Text;
 
-typedef struct Editorstate;
+typedef struct Editorstate EditorState;
 
 void initText(Text* t);
 void insertChar(Text* t, char c);
