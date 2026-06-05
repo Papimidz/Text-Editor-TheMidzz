@@ -18,5 +18,6 @@ typedef struct EditorState {
 void initEditor(EditorState *state);
 void addLine(EditorState *state, char *inputText);
 void editor(EditorState *state);
+void getTextString(Text *t, char *buffer);
 
 #endif
