@@ -53,6 +53,3 @@ Gunakan perintah berikut untuk membuat file executable:
 ```bash
 gcc main.c hasbi.c chyntia.c dzia.c -o editor
 ```
-
-## Catatan
-Project ini dibuat untuk pengolahan teks sederhana berbasis console dengan pendekatan linked list agar fleksibel dalam manajemen baris dan karakter.
