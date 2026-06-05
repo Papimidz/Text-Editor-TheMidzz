@@ -102,8 +102,8 @@ void editor(EditorState *state) {
             displayText(&(currLine->lineContent)); 
             currLine = currLine->next;
         }
-        
-        printf("\nMenu: | /copy <baris> | /cut <baris> | /paste | /find <kata> | /replace <lama> <baru> | /save | /close\n>> ");
+
+        printf("\nMenu: Teks Biasa (Tambah Baris) | /copy <baris> | /cut <baris> | /paste | /replace | /save | /close\n>> ");
         
         if (fgets(input, sizeof(input), stdin) == NULL) break;
         input[strcspn(input, "\n")] = 0;
@@ -143,12 +143,8 @@ void editor(EditorState *state) {
                 }
                 printf("... Tekan Enter"); getchar();
             }
-            else if (strcmp(cmd, "/find") == 0) {
-                findWord(state, arg1);
-                printf("... Tekan Enter"); getchar();
-            }
             else if (strcmp(cmd, "/replace") == 0) {
-                replaceWord(state, arg1, arg2);
+                findAndReplace(state);
                 printf("... Tekan Enter"); getchar();
             }
             else {
