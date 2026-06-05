@@ -1,6 +1,5 @@
 #ifndef dzia_H
 #define dzia_H
-#include "hasbi.h"
 
 typedef struct Node {
     char data;
