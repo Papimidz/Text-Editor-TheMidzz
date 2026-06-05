@@ -25,8 +25,7 @@ int main() {
 
         switch (choice) {
             case 1:
-                state.lineCount = 0;
-                state.filename[0] = '\0';
+                NewFile(&state);
                 editor(&state);
                 break;
 
@@ -41,11 +40,28 @@ int main() {
                 break;
                 
             case 3:
-                printf("Nama file: ");
+                if (strlen(state.filename) == 0) {
+                    printf("Masukkan nama file untuk menyimpan: ");
+                    scanf("%s", state.filename);
+                    getchar();
+                }
+                saveFile(&state);
+                break;
+            
+            case 4:
+                printf("Nama file yang akan dihapus: ");
                 scanf("%s", tempFilename);
                 getchar();
                 deleteFile(tempFilename);
                 break;
+                
+            case 0:
+                printf("Menutup Text Editor. Sampai jumpa!\n");
+                break;
+            
+            default:
+                printf("Pilihan tidak valid, silakan coba lagi.\n");
+                break;    
         }
 
     } while (choice != 0);
