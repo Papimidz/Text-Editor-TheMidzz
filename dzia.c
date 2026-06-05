@@ -54,59 +54,43 @@ void clearText(Text* t) {
     t->tail = NULL;
     t->filename[0] = '\0';
 }
-int getLength(Text* t) {
-    int count = 0;
-    Node* curr = t->head;
 
-    while (curr != NULL) {
-        count++;
-        curr = curr->next;
-    }
-
-    return count;
-}
 int isEmpty(Text* t) {
     return (t->head == NULL);
 }
 
-Node* getNodeAt(Text* t, int index) {
-    int count = 0;
-    Node* curr = t->head;
-
-    while (curr != NULL) {
-        if (count == index) {
-            return curr;
-        }
-        count++;
-        curr = curr->next;
-    }
-
-    return NULL; 
-}
-
-void findWord(EditorState *state, char *word) {
+void findAndReplace(EditorState *state) {
+    char kataLama[256], kataBaru[256], buffer[1024], temp[1024];
     LineNode *curr = state->head;
-    char buffer[1024];
-    int row = 1, found = 0;
+    int row = 1, count = 0;
 
-    printf("\n>> Hasil pencarian untuk '%s':\n", word);
+    printf("\nfind: ");
+    scanf(" %255[^\n]", kataLama);
+    while(getchar() != '\n');
+
+    printf("\n>> Hasil pencarian untuk '%s':\n", kataLama);
     while (curr != NULL) {
         getTextString(&(curr->lineContent), buffer);
-        if (strstr(buffer, word) != NULL) {
+        if (strstr(buffer, kataLama) != NULL) {
             printf("   - Ada di baris %d: %s\n", row, buffer);
-            found = 1;
+            count++;
         }
         curr = curr->next;
         row++;
     }
-    if (found == 0) printf("   (Tidak ada hasil yang cocok)\n");
-}
 
-void replaceWord(EditorState *state, char *kataLama, char *kataBaru) {
-    LineNode *curr = state->head;
-    char buffer[1024], temp[1024];
-    int count = 0;
+    if (count == 0) {
+        printf("   (Kata/Kalimat tidak ditemukan, replace dibatalkan)\n");
+        return;
+    }
 
+    printf("\nreplace: ");
+    scanf(" %255[^\n]", kataBaru);
+    while(getchar() != '\n'); 
+
+    curr = state->head; 
+    int replacedCount = 0;
+    
     while (curr != NULL) {
         getTextString(&(curr->lineContent), buffer);
         char *pos = strstr(buffer, kataLama);
@@ -123,9 +107,9 @@ void replaceWord(EditorState *state, char *kataLama, char *kataBaru) {
             for(size_t i = 0; i < strlen(temp); i++) {
                 insertChar(&(curr->lineContent), temp[i]);
             }
-            count++;
+            replacedCount++;
         }
         curr = curr->next;
     }
-    printf(">> Selesai! %d baris telah diperbarui.\n", count);
+    printf(">> Selesai! %d baris telah diperbarui.\n", replacedCount);
 }
